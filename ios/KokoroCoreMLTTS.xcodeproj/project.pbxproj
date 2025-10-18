@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {
+    };
+    objectVersion = 56;
+    objects = {
+
+/* Begin PBXBuildFile section */
+        33C7E444BF804A7B9AEF767D /* KokoroCoreMLTTSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F50EC341D540328175811E /* KokoroCoreMLTTSApp.swift */; };
+        44D5467F261848A9BACE5A6D /* TTSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863194454C674DD0B61404AE /* TTSView.swift */; };
+        46198412EFCC4A86A1146E3C /* TTSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB9A956075448418955C26A /* TTSViewModel.swift */; };
+        5476B9F11B574523B2E2BF42 /* KokoroTTSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2792BB3DD442FA1D4D220 /* KokoroTTSEngine.swift */; };
+        5E857FB0B4AA49A3B0205B3B /* AudioRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A309D3F3E44FD84B72361 /* AudioRenderer.swift */; };
+        5980D0D6C04241E9A40D74DE /* SystemTTSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E087A5F7AF4E8BBE1F2C31 /* SystemTTSEngine.swift */; };
+        2C5A1921A0BF4F6AB5E59172 /* TextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0E7C6D1AE7464481D4AFB0 /* TextProcessor.swift */; };
+        7F271857D54A4F51AFA459EF /* DurationPredictorML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0B4ADF42EA45C19DC0CB50 /* DurationPredictorML.swift */; };
+        9A3E32E3F92C44F191CC1076 /* DecoderML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691DB0FC3C5B4A2BA1899E51 /* DecoderML.swift */; };
+        0AEB6C0BF68D4AE08C0F8C21 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4A21568E646A8A28DB7B0 /* FeatureFlags.swift */; };
+        CEB5EAA6D16B49A28C38F773 /* MLMultiArray+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C0443084C415D834CF7A4 /* MLMultiArray+Helpers.swift */; };
+        B8B4E30AD0D14524879A5A72 /* MetricsLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C26CC7D35475C895A5D6A /* MetricsLogger.swift */; };
+        0C0DDB2FF0864586A7B6689E /* VoiceLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B2A63F1B4D4F48A73B4B52 /* VoiceLibrary.swift */; };
+        1EBADB71DF7E4EA1816DC6C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86379C6405554CB5855FF8BB /* Assets.xcassets */; };
+        5F9F14A73D7E4F2B842FFBEC /* phoneme_vocab.json in Resources */ = {isa = PBXBuildFile; fileRef = 27A27B0A78AF442C8E9B6323 /* phoneme_vocab.json */; };
+        8019E0D7EA2D45FBB23B5D98 /* af_heart.bin in Resources */ = {isa = PBXBuildFile; fileRef = 2F1F20ACAF62435FBDA06929 /* af_heart.bin */; };
+        4E2893D51CC247129096E21B /* am_michael.bin in Resources */ = {isa = PBXBuildFile; fileRef = 5B0268336E2E45DABAF022A6 /* am_michael.bin */; };
+        95D283A08BA84AC9A2C14DAB /* kokoro_duration.mlpackage in Resources */ = {isa = PBXBuildFile; fileRef = 5790A6E35F1B4CA5A102B4C0 /* kokoro_duration.mlpackage */; };
+        A0EE2BA52B4D4A10B845A42E /* kokoro_decoder_3s.mlpackage in Resources */ = {isa = PBXBuildFile; fileRef = 7C7C9F66237B45D688A01F41 /* kokoro_decoder_3s.mlpackage */; };
+        EC69AB4F594D4E42A1F90268 /* kokoro_decoder_10s.mlpackage in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C59A728AF46E4AC8E8886 /* kokoro_decoder_10s.mlpackage */; };
+        7BAF4F68362345C48F8B8E72 /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F1D5C65B6345688677334D /* CoreML.framework */; };
+        4C671D4FD29F4DF58845AB12 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D56E548DF3A4FA4A8FCAD3C /* AVFoundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+        04B2A63F1B4D4F48A73B4B52 /* VoiceLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceLibrary.swift; sourceTree = "<group>"; };
+        208C26CC7D35475C895A5D6A /* MetricsLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsLogger.swift; sourceTree = "<group>"; };
+        27A27B0A78AF442C8E9B6323 /* phoneme_vocab.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = phoneme_vocab.json; sourceTree = "<group>"; };
+        2F1F20ACAF62435FBDA06929 /* af_heart.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = af_heart.bin; sourceTree = "<group>"; };
+        3A0B4ADF42EA45C19DC0CB50 /* DurationPredictorML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPredictorML.swift; sourceTree = "<group>"; };
+        32F1D5C65B6345688677334D /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
+        41F50EC341D540328175811E /* KokoroCoreMLTTSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KokoroCoreMLTTSApp.swift; sourceTree = "<group>"; };
+        44E087A5F7AF4E8BBE1F2C31 /* SystemTTSEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemTTSEngine.swift; sourceTree = "<group>"; };
+        4B4C59A728AF46E4AC8E8886 /* kokoro_decoder_10s.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper.mlpackage; path = kokoro_decoder_10s.mlpackage; sourceTree = "<group>"; };
+        4F133AF57E0A4974A36C1F00 /* KokoroCoreMLTTS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KokoroCoreMLTTS.entitlements; sourceTree = "<group>"; };
+        5790A6E35F1B4CA5A102B4C0 /* kokoro_duration.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper.mlpackage; path = kokoro_duration.mlpackage; sourceTree = "<group>"; };
+        5B0268336E2E45DABAF022A6 /* am_michael.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = am_michael.bin; sourceTree = "<group>"; };
+        5CE4A21568E646A8A28DB7B0 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
+        579B9F3B7D264807A1355479 /* KokoroCoreMLTTS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KokoroCoreMLTTS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+        63A3B3F4C3C64245A8F62281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+        691DB0FC3C5B4A2BA1899E51 /* DecoderML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderML.swift; sourceTree = "<group>"; };
+        6AB9A956075448418955C26A /* TTSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTSViewModel.swift; sourceTree = "<group>"; };
+        7BB2792BB3DD442FA1D4D220 /* KokoroTTSEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KokoroTTSEngine.swift; sourceTree = "<group>"; };
+        7C7C9F66237B45D688A01F41 /* kokoro_decoder_3s.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper.mlpackage; path = kokoro_decoder_3s.mlpackage; sourceTree = "<group>"; };
+        863194454C674DD0B61404AE /* TTSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTSView.swift; sourceTree = "<group>"; };
+        86379C6405554CB5855FF8BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+        8C0E7C6D1AE7464481D4AFB0 /* TextProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessor.swift; sourceTree = "<group>"; };
+        9D56E548DF3A4FA4A8FCAD3C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+        9E9C0443084C415D834CF7A4 /* MLMultiArray+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MLMultiArray+Helpers.swift"; sourceTree = "<group>"; };
+        B55A309D3F3E44FD84B72361 /* AudioRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRenderer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+        86377C81E7864CDEB3B0274A /* Frameworks */ = {
+            isa = PBXFrameworksBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+                7BAF4F68362345C48F8B8E72 /* CoreML.framework in Frameworks */,
+                4C671D4FD29F4DF58845AB12 /* AVFoundation.framework in Frameworks */,
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+        208B3CC118A44DBF96424FD8 /* Utilities */ = {
+            isa = PBXGroup;
+            children = (
+                5CE4A21568E646A8A28DB7B0 /* FeatureFlags.swift */,
+                208C26CC7D35475C895A5D6A /* MetricsLogger.swift */,
+                9E9C0443084C415D834CF7A4 /* MLMultiArray+Helpers.swift */,
+                04B2A63F1B4D4F48A73B4B52 /* VoiceLibrary.swift */,
+            );
+            path = Utilities;
+            sourceTree = "<group>";
+        };
+        28D611878FBF4F64ACF5BD2E /* Models */ = {
+            isa = PBXGroup;
+            children = (
+                5790A6E35F1B4CA5A102B4C0 /* kokoro_duration.mlpackage */,
+                7C7C9F66237B45D688A01F41 /* kokoro_decoder_3s.mlpackage */,
+                4B4C59A728AF46E4AC8E8886 /* kokoro_decoder_10s.mlpackage */,
+            );
+            path = Models;
+            sourceTree = "<group>";
+        };
+        2A487CE5AF5E44F6BA9C4107 /* Frameworks */ = {
+            isa = PBXGroup;
+            children = (
+                9D56E548DF3A4FA4A8FCAD3C /* AVFoundation.framework */,
+                32F1D5C65B6345688677334D /* CoreML.framework */,
+            );
+            name = Frameworks;
+            sourceTree = "<group>";
+        };
+        3BE0F62A4E264A9BA83DA673 /* Voices */ = {
+            isa = PBXGroup;
+            children = (
+                2F1F20ACAF62435FBDA06929 /* af_heart.bin */,
+                5B0268336E2E45DABAF022A6 /* am_michael.bin */,
+            );
+            path = Voices;
+            sourceTree = "<group>";
+        };
+        41B9E5579D844D88AE1A88C4 /* Resources */ = {
+            isa = PBXGroup;
+            children = (
+                86379C6405554CB5855FF8BB /* Assets.xcassets */,
+                27A27B0A78AF442C8E9B6323 /* phoneme_vocab.json */,
+                3BE0F62A4E264A9BA83DA673 /* Voices */,
+                28D611878FBF4F64ACF5BD2E /* Models */,
+            );
+            path = Resources;
+            sourceTree = "<group>";
+        };
+        58FA5F8E021B47E38032153C /* Engines */ = {
+            isa = PBXGroup;
+            children = (
+                7BB2792BB3DD442FA1D4D220 /* KokoroTTSEngine.swift */,
+                B55A309D3F3E44FD84B72361 /* AudioRenderer.swift */,
+                44E087A5F7AF4E8BBE1F2C31 /* SystemTTSEngine.swift */,
+                8C0E7C6D1AE7464481D4AFB0 /* TextProcessor.swift */,
+            );
+            path = Engines;
+            sourceTree = "<group>";
+        };
+        5EE0558ED6BF4C2C9FE4E8BB /* Sources */ = {
+            isa = PBXGroup;
+            children = (
+                79E84F6EF2B849A69AD9A323 /* UI */,
+                58FA5F8E021B47E38032153C /* Engines */,
+                208B3CC118A44DBF96424FD8 /* Utilities */,
+                9B24A696912A4B1C933B4F1F /* Models */,
+            );
+            path = Sources;
+            sourceTree = "<group>";
+        };
+        79E84F6EF2B849A69AD9A323 /* UI */ = {
+            isa = PBXGroup;
+            children = (
+                41F50EC341D540328175811E /* KokoroCoreMLTTSApp.swift */,
+                863194454C674DD0B61404AE /* TTSView.swift */,
+                6AB9A956075448418955C26A /* TTSViewModel.swift */,
+            );
+            path = UI;
+            sourceTree = "<group>";
+        };
+        9B24A696912A4B1C933B4F1F /* Models */ = {
+            isa = PBXGroup;
+            children = (
+                3A0B4ADF42EA45C19DC0CB50 /* DurationPredictorML.swift */,
+                691DB0FC3C5B4A2BA1899E51 /* DecoderML.swift */,
+            );
+            path = Models;
+            sourceTree = "<group>";
+        };
+        B3C124EFD694485BA1D8C907 /* KokoroCoreMLTTS */ = {
+            isa = PBXGroup;
+            children = (
+                63A3B3F4C3C64245A8F62281 /* Info.plist */,
+                4F133AF57E0A4974A36C1F00 /* KokoroCoreMLTTS.entitlements */,
+                5EE0558ED6BF4C2C9FE4E8BB /* Sources */,
+                41B9E5579D844D88AE1A88C4 /* Resources */,
+            );
+            path = KokoroCoreMLTTS;
+            sourceTree = "<group>";
+        };
+        CC5A4E2A5EE54632A003B994 /* Products */ = {
+            isa = PBXGroup;
+            children = (
+                579B9F3B7D264807A1355479 /* KokoroCoreMLTTS.app */,
+            );
+            name = Products;
+            sourceTree = "<group>";
+        };
+        F7E3DDF3C5AE4B8E8F0BE0ED /* Project */ = {
+            isa = PBXGroup;
+            children = (
+                B3C124EFD694485BA1D8C907 /* KokoroCoreMLTTS */,
+                2A487CE5AF5E44F6BA9C4107 /* Frameworks */,
+                CC5A4E2A5EE54632A003B994 /* Products */,
+            );
+            sourceTree = "<group>";
+        };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+        46198412EFCC4A86A1146E3D /* KokoroCoreMLTTS */ = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = 6E53FC529FD340E795761663 /* Build configuration list for PBXNativeTarget "KokoroCoreMLTTS" */;
+            buildPhases = (
+                7FCDD01CC9AC4BC08751D8D3 /* Sources */,
+                86377C81E7864CDEB3B0274A /* Frameworks */,
+                B8F6CC83F1F94B66AF9F45A7 /* Resources */,
+            );
+            buildRules = (
+            );
+            dependencies = (
+            );
+            name = KokoroCoreMLTTS;
+            productName = KokoroCoreMLTTS;
+            productReference = 579B9F3B7D264807A1355479 /* KokoroCoreMLTTS.app */;
+            productType = "com.apple.product-type.application";
+        };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+        B55A309D3F3E44FD84B72360 /* Project object */ = {
+            isa = PBXProject;
+            attributes = {
+                LastSwiftUpdateCheck = 1500;
+                LastUpgradeCheck = 1500;
+                TargetAttributes = {
+                    46198412EFCC4A86A1146E3D = {
+                        SystemCapabilities = {
+                        };
+                    };
+                };
+            };
+            buildConfigurationList = 72B1B8146A4E4DF49C44E1C6 /* Build configuration list for PBXProject "KokoroCoreMLTTS" */;
+            compatibilityVersion = "Xcode 15.0";
+            developmentRegion = en;
+            hasScannedForEncodings = 0;
+            knownRegions = (
+                en,
+                Base,
+            );
+            mainGroup = F7E3DDF3C5AE4B8E8F0BE0ED /* Project */;
+            productRefGroup = CC5A4E2A5EE54632A003B994 /* Products */;
+            projectDirPath = "";
+            projectReferences = (
+            );
+            projectRoot = "";
+            targets = (
+                46198412EFCC4A86A1146E3D /* KokoroCoreMLTTS */,
+            );
+        };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+        B8F6CC83F1F94B66AF9F45A7 /* Resources */ = {
+            isa = PBXResourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+                1EBADB71DF7E4EA1816DC6C4 /* Assets.xcassets in Resources */,
+                5F9F14A73D7E4F2B842FFBEC /* phoneme_vocab.json in Resources */,
+                8019E0D7EA2D45FBB23B5D98 /* af_heart.bin in Resources */,
+                4E2893D51CC247129096E21B /* am_michael.bin in Resources */,
+                95D283A08BA84AC9A2C14DAB /* kokoro_duration.mlpackage in Resources */,
+                A0EE2BA52B4D4A10B845A42E /* kokoro_decoder_3s.mlpackage in Resources */,
+                EC69AB4F594D4E42A1F90268 /* kokoro_decoder_10s.mlpackage in Resources */,
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+        7FCDD01CC9AC4BC08751D8D3 /* Sources */ = {
+            isa = PBXSourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+                33C7E444BF804A7B9AEF767D /* KokoroCoreMLTTSApp.swift in Sources */,
+                44D5467F261848A9BACE5A6D /* TTSView.swift in Sources */,
+                46198412EFCC4A86A1146E3C /* TTSViewModel.swift in Sources */,
+                5476B9F11B574523B2E2BF42 /* KokoroTTSEngine.swift in Sources */,
+                5E857FB0B4AA49A3B0205B3B /* AudioRenderer.swift in Sources */,
+                5980D0D6C04241E9A40D74DE /* SystemTTSEngine.swift in Sources */,
+                2C5A1921A0BF4F6AB5E59172 /* TextProcessor.swift in Sources */,
+                7F271857D54A4F51AFA459EF /* DurationPredictorML.swift in Sources */,
+                9A3E32E3F92C44F191CC1076 /* DecoderML.swift in Sources */,
+                0AEB6C0BF68D4AE08C0F8C21 /* FeatureFlags.swift in Sources */,
+                CEB5EAA6D16B49A28C38F773 /* MLMultiArray+Helpers.swift in Sources */,
+                B8B4E30AD0D14524879A5A72 /* MetricsLogger.swift in Sources */,
+                0C0DDB2FF0864586A7B6689E /* VoiceLibrary.swift in Sources */,
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+        22C12717A1344B1484918FE7 /* Debug */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ANALYZER_NONNULL = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_MODULES = YES;
+                CLANG_ENABLE_OBJC_ARC = YES;
+                CLANG_WARN_UNREACHABLE_CODE = YES;
+                COPY_PHASE_STRIP = NO;
+                DEBUG_INFORMATION_FORMAT = dwarf;
+                ENABLE_STRICT_OBJC_MSGSEND = YES;
+                GCC_C_LANGUAGE_STANDARD = gnu17;
+                GCC_DYNAMIC_NO_PIC = NO;
+                GCC_NO_COMMON_BLOCKS = YES;
+                GCC_OPTIMIZATION_LEVEL = 0;
+                GCC_PREPROCESSOR_DEFINITIONS = (
+                    "DEBUG=1",
+                    "$(inherited)",
+                );
+                GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+                GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+                IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+                ONLY_ACTIVE_ARCH = YES;
+                SDKROOT = iphoneos;
+                SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+            };
+            name = Debug;
+        };
+        4E60FBBE1A934C2F9303B3DE /* Release */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ANALYZER_NONNULL = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_MODULES = YES;
+                CLANG_ENABLE_OBJC_ARC = YES;
+                CLANG_WARN_UNREACHABLE_CODE = YES;
+                COPY_PHASE_STRIP = NO;
+                DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+                ENABLE_NS_ASSERTIONS = NO;
+                ENABLE_STRICT_OBJC_MSGSEND = YES;
+                GCC_C_LANGUAGE_STANDARD = gnu17;
+                GCC_NO_COMMON_BLOCKS = YES;
+                GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+                GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+                IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+                MTL_ENABLE_DEBUG_INFO = NO;
+                SDKROOT = iphoneos;
+                SWIFT_COMPILATION_MODE = wholemodule;
+                SWIFT_OPTIMIZATION_LEVEL = "-O";
+            };
+            name = Release;
+        };
+        5D6D7A2A0FE744F0A76B6A57 /* Debug */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+                CODE_SIGN_STYLE = Automatic;
+                CODE_SIGN_ENTITLEMENTS = KokoroCoreMLTTS/KokoroCoreMLTTS.entitlements;
+                CURRENT_PROJECT_VERSION = 1;
+                DEVELOPMENT_ASSET_PATHS = "\"KokoroCoreMLTTS/Resources\"";
+                DEVELOPMENT_TEAM = "";
+                ENABLE_PREVIEWS = YES;
+                GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = KokoroCoreMLTTS/Info.plist;
+                IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+                LD_RUNPATH_SEARCH_PATHS = (
+                    "$(inherited)",
+                    "@executable_path/Frameworks",
+                );
+                PRODUCT_BUNDLE_IDENTIFIER = com.example.KokoroCoreMLTTS;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                PROVISIONING_PROFILE_SPECIFIER = "";
+                SWIFT_EMIT_LOC_STRINGS = YES;
+                SWIFT_VERSION = 5.9;
+                TARGETED_DEVICE_FAMILY = "1,2";
+            };
+            name = Debug;
+        };
+        CE9E5C6E45454709A2E2E194 /* Release */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+                CODE_SIGN_STYLE = Automatic;
+                CODE_SIGN_ENTITLEMENTS = KokoroCoreMLTTS/KokoroCoreMLTTS.entitlements;
+                CURRENT_PROJECT_VERSION = 1;
+                DEVELOPMENT_ASSET_PATHS = "\"KokoroCoreMLTTS/Resources\"";
+                DEVELOPMENT_TEAM = "";
+                ENABLE_PREVIEWS = YES;
+                GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = KokoroCoreMLTTS/Info.plist;
+                IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+                LD_RUNPATH_SEARCH_PATHS = (
+                    "$(inherited)",
+                    "@executable_path/Frameworks",
+                );
+                PRODUCT_BUNDLE_IDENTIFIER = com.example.KokoroCoreMLTTS;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                PROVISIONING_PROFILE_SPECIFIER = "";
+                SWIFT_EMIT_LOC_STRINGS = YES;
+                SWIFT_VERSION = 5.9;
+                TARGETED_DEVICE_FAMILY = "1,2";
+            };
+            name = Release;
+        };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+        6E53FC529FD340E795761663 /* Build configuration list for PBXNativeTarget "KokoroCoreMLTTS" */ = {
+            isa = XCConfigurationList;
+            buildConfigurations = (
+                5D6D7A2A0FE744F0A76B6A57 /* Debug */,
+                CE9E5C6E45454709A2E2E194 /* Release */,
+            );
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Debug;
+        };
+        72B1B8146A4E4DF49C44E1C6 /* Build configuration list for PBXProject "KokoroCoreMLTTS" */ = {
+            isa = XCConfigurationList;
+            buildConfigurations = (
+                22C12717A1344B1484918FE7 /* Debug */,
+                4E60FBBE1A934C2F9303B3DE /* Release */,
+            );
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Debug;
+        };
+/* End XCConfigurationList section */
+
+    };
+    rootObject = B55A309D3F3E44FD84B72360 /* Project object */;
+}
