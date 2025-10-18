@@ -35,7 +35,7 @@ extension MLMultiArray {
 
     func toFloatArray() -> [Float] {
         guard dataType == .float32 else {
-            return (0..<count).map { Float(truncating: self[NSNumber(value: $0)]) }
+            return (0..<count).map { index in Float(truncating: self[[NSNumber(value: index)]]) }
         }
         let pointer = dataPointer.bindMemory(to: Float.self, capacity: count)
         return Array(UnsafeBufferPointer(start: pointer, count: count))

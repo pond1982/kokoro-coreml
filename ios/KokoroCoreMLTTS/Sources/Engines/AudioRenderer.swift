@@ -1,6 +1,11 @@
 import AVFoundation
 import Foundation
 
+fileprivate func audioLog(_ items: Any..., function: String = #function) {
+    let prefix = "[AudioRenderer] \(function):"
+    print(prefix, items.map { String(describing: $0) }.joined(separator: " "))
+}
+
 protocol AudioRendererDelegate: AnyObject {
     func audioRendererDidFinishPlaying()
     func audioRenderer(levelDidUpdate rms: Float)
@@ -20,6 +25,7 @@ final class AudioRenderer: NSObject {
         engine.attach(player)
         let format = AVAudioFormat(standardFormatWithSampleRate: 24_000, channels: 1)!
         engine.connect(player, to: engine.mainMixerNode, format: format)
+        audioLog("Engine and player configured. Mixer sampleRate=", engine.mainMixerNode.outputFormat(forBus: 0).sampleRate)
         engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
             self?.meterQueue.async {
                 guard let channelData = buffer.floatChannelData?.pointee else { return }
@@ -35,6 +41,7 @@ final class AudioRenderer: NSObject {
                 } else {
                     rms = 0
                 }
+                audioLog("RMS=", String(format: "%.6f", rms))
                 DispatchQueue.main.async {
                     self?.delegate?.audioRenderer(levelDidUpdate: rms)
                 }
@@ -49,7 +56,9 @@ final class AudioRenderer: NSObject {
     }
 
     func play(waveform: [Float], sampleRate: Double = 24_000) throws {
+        audioLog("Play requested samples=", waveform.count, "sampleRate=", sampleRate)
         try startEngineIfNeeded(sampleRate: sampleRate)
+        audioLog("Engine running=", engine.isRunning)
         guard let format = player.inputFormat(forBus: 0).withSampleRate(sampleRate) else { return }
 
         let frameCount = AVAudioFrameCount(waveform.count)
@@ -60,6 +69,7 @@ final class AudioRenderer: NSObject {
             memcpy(buffer.floatChannelData?.pointee, base, Int(frameCount) * MemoryLayout<Float>.size)
         }
 
+        audioLog("Scheduling buffer frames=", buffer.frameLength, "formatSR=", format.sampleRate)
         player.scheduleBuffer(buffer, at: nil, options: []) { [weak self] in
             DispatchQueue.main.async {
                 self?.delegate?.audioRendererDidFinishPlaying()
@@ -67,23 +77,28 @@ final class AudioRenderer: NSObject {
         }
         currentBuffer = buffer
         player.play()
+        audioLog("Player started isPlaying=", player.isPlaying)
     }
 
     func stop() {
+        audioLog("Stop called")
         player.stop()
         engine.stop()
         currentBuffer = nil
     }
 
     private func startEngineIfNeeded(sampleRate: Double) throws {
+        audioLog("startEngineIfNeeded currentRunning=", engine.isRunning)
         guard !engine.isRunning else { return }
         try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
         try AVAudioSession.sharedInstance().setActive(true)
+        audioLog("Audio session active. Output SR=", engine.outputNode.outputFormat(forBus: 0).sampleRate)
         if engine.outputNode.outputFormat(forBus: 0).sampleRate != sampleRate {
             // Reconnect output format if sample rate mismatch occurs.
             engine.disconnectNodeOutput(player)
             let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 1)!
             engine.connect(player, to: engine.mainMixerNode, format: format)
+            audioLog("Reconnected player with format SR=", format.sampleRate)
         }
         try engine.start()
     }
@@ -97,6 +112,7 @@ final class AudioRenderer: NSObject {
                 }
             }
         } catch {
+            audioLog("Engine config change, attempting restart")
             print("Failed to restart audio engine: \(error)")
         }
     }

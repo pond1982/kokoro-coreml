@@ -3,6 +3,11 @@ import CoreML
 import Darwin
 import Foundation
 
+fileprivate func kokoroLog(_ items: Any..., function: String = #function) {
+    let prefix = "[KokoroTTSEngine] \(function):"
+    print(prefix, items.map { String(describing: $0) }.joined(separator: " "))
+}
+
 protocol KokoroTTSEngineDelegate: AnyObject {
     func engineDidStartSynthesis()
     func engineDidFinish(with metrics: InferenceMetrics)
@@ -44,6 +49,7 @@ final class KokoroTTSEngine: NSObject {
     }
 
     func stop() {
+        kokoroLog("Stop requested")
         queue.sync {
             stopRequested = true
             audioRenderer.stop()
@@ -52,6 +58,7 @@ final class KokoroTTSEngine: NSObject {
     }
 
     func speak(text: String, voice: VoiceDefinition, speed: Float) {
+        kokoroLog("Speak start textLen=", text.count, "voice=", voice.id, "speed=", speed)
         stop()
         delegate?.engineDidStartSynthesis()
         stopRequested = false
@@ -63,6 +70,7 @@ final class KokoroTTSEngine: NSObject {
                 let warmStart = Date()
                 try self.durationModel.warmUpIfNeeded()
                 let durationWarm = Date().timeIntervalSince(warmStart)
+                kokoroLog("Duration model warm done")
                 if self.durationModelWarmed {
                     self.metrics.recordWarmLoad(durationWarm)
                 } else {
@@ -81,22 +89,29 @@ final class KokoroTTSEngine: NSObject {
                         self.metrics.recordWarmLoad(warm)
                     }
                     decoderBuckets.forEach { self.warmedBuckets.insert($0) }
+                    kokoroLog("Decoder warm done buckets=", decoderBuckets)
                 }
 
                 let metricsStart = Date()
                 let voiceEmbedding = try self.voiceLibrary.loadEmbedding(for: voice)
+                kokoroLog("Loaded voice embedding count=", voiceEmbedding.count)
                 let refS = try self.makeRefSArray(from: voiceEmbedding)
                 let sentences: [TokenizedSentence]
-                do {
-                    sentences = try self.textProcessor.tokenize(text)
-                } catch {
-                    sentences = try self.fallbackProcessor.tokenize(text)
-                }
+                 do {
+                     sentences = try self.textProcessor.tokenize(text)
+                     kokoroLog("Tokenized with primary processor. sentences=", sentences.count, "tokenCounts=", sentences.map { $0.tokens.count })
+                 } catch {
+                     sentences = try self.fallbackProcessor.tokenize(text)
+                     kokoroLog("Tokenized with fallback processor. sentences=", sentences.count, "tokenCounts=", sentences.map { $0.tokens.count })
+                 }
+                kokoroLog("Begin synthesis segments count=", sentences.count)
                 var generatedAudio: [Float] = []
 
                 for sentence in sentences {
+                    kokoroLog("Segment start idx=", generatedAudio.count, "tokens=", sentence.tokens.count)
                     if self.stopRequested { return }
                     let bucket = self.selectBucket(for: sentence.tokens.count, speed: speed)
+                    kokoroLog("Selected bucket=", bucket, "tokenCapacity=", bucket.tokenCapacity)
                     let segmentStart = Date()
                     let result = try self.runPipeline(
                         tokens: sentence.tokens,
@@ -105,6 +120,11 @@ final class KokoroTTSEngine: NSObject {
                         speed: speed
                     )
                     generatedAudio.append(contentsOf: result)
+                    if let minAmp = result.min(), let maxAmp = result.max() {
+                        kokoroLog("Segment audio samples=", result.count, "range=", String(format: "%.6f", minAmp), "to", String(format: "%.6f", maxAmp))
+                    } else {
+                        kokoroLog("Segment audio samples=", result.count)
+                    }
                     let delta = Date().timeIntervalSince(segmentStart)
                     self.metrics.recordSegment(duration: delta)
                 }
@@ -114,8 +134,15 @@ final class KokoroTTSEngine: NSObject {
                 self.metrics.recordTotal(total)
                 self.metrics.recordPeakMemory(self.captureMemory())
                 self.invalidateTimer()
+                kokoroLog("Synthesis complete totalSamples=", generatedAudio.count)
 
-                try self.audioRenderer.play(waveform: generatedAudio)
+                do {
+                    try self.audioRenderer.play(waveform: generatedAudio)
+                    kokoroLog("Playback started")
+                } catch {
+                    kokoroLog("Playback error:", error.localizedDescription)
+                    throw error
+                }
 
                 if self.featureFlags.dumpAudioToFiles {
                     try self.dumpWaveform(generatedAudio)
@@ -130,21 +157,25 @@ final class KokoroTTSEngine: NSObject {
     }
 
     private func runPipeline(tokens: [Int32], refS: MLMultiArray, bucket: DecoderBucket, speed: Float) throws -> [Float] {
+        kokoroLog("runPipeline tokens=", tokens.count, "bucket=", bucket)
         let prediction = try durationModel.predict(tokenIDs: tokens, refS: refS, speed: speed)
 
         let tokenCount = min(tokens.count + 2, prediction.predDurations.count)
         let durations = Array(prediction.predDurations.prefix(tokenCount))
         let alignment = buildAlignmentMatrix(durations: durations, frameCount: bucket.frameCount)
+        kokoroLog("Durations tokenCount=", tokenCount, "frameCount=", bucket.frameCount)
 
         let tEnChannels = Int(truncating: prediction.tEn.shape[1])
         let tEnLength = Int(truncating: prediction.tEn.shape[2])
         let tEnMatrix = prediction.tEn.to2DArray(channels: tEnChannels, frames: tEnLength)
+        kokoroLog("ASR matrix dims=", tEnChannels, "x", bucket.frameCount)
         let asrMatrix = multiply(features: tEnMatrix, alignment: alignment)
 
         let f0Noise = generateF0Noise(for: bucket, alignment: alignment)
         let asrArray = try MLMultiArray.fromMatrix(asrMatrix)
         let f0Array = try MLMultiArray.from(vector: f0Noise.f0)
         let noiseArray = try MLMultiArray.from(vector: f0Noise.noise)
+        kokoroLog("Decoder input shapes asr=", asrArray.shape, "f0=", f0Array.shape, "noise=", noiseArray.shape)
 
         let waveform = try decoder.decode(bucket: bucket, asr: asrArray, f0: f0Array, noise: noiseArray, refS: refS)
         return waveform.toFloatArray()
@@ -155,6 +186,7 @@ final class KokoroTTSEngine: NSObject {
         for (index, value) in embedding.prefix(256).enumerated() {
             array[[0, NSNumber(value: index)]] = NSNumber(value: value)
         }
+        kokoroLog("refS array created shape=", array.shape)
         return array
     }
 
@@ -212,14 +244,17 @@ final class KokoroTTSEngine: NSObject {
     private func selectBucket(for tokenCount: Int, speed: Float) -> DecoderBucket {
         let sorted = supportedBuckets.sorted { $0.duration < $1.duration }
         if sorted.isEmpty {
+            kokoroLog("selectBucket fallback chose=", DecoderBucket.threeSeconds, "for adjustedTokens=0")
             return .threeSeconds
         }
         let adjustedTokens = Int(Float(tokenCount) / max(speed, 0.5))
         for bucket in sorted {
             if adjustedTokens <= bucket.tokenCapacity {
+                kokoroLog("selectBucket chose=", bucket, "for adjustedTokens=", adjustedTokens)
                 return bucket
             }
         }
+        kokoroLog("selectBucket fallback chose=", sorted.last ?? .threeSeconds, "for adjustedTokens=", adjustedTokens)
         return sorted.last ?? .threeSeconds
     }
 
@@ -259,10 +294,12 @@ final class KokoroTTSEngine: NSObject {
     }
 
     private static func detectBuckets(bundle: Bundle = .main) -> [DecoderBucket] {
-        DecoderBucket.allCases.filter { bucket in
+        let detected = DecoderBucket.allCases.filter { bucket in
             bundle.url(forResource: bucket.modelName, withExtension: "mlmodelc") != nil ||
             bundle.url(forResource: bucket.modelName, withExtension: "mlpackage") != nil
         }
+        print("[KokoroTTSEngine detectBuckets]", detected)
+        return detected
     }
 }
 

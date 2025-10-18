@@ -133,11 +133,18 @@ final class DurationPredictorML {
     }
 }
 
-private struct DurationInput: MLFeatureProvider {
+private final class DurationInput: MLFeatureProvider {
     var inputIDs: MLMultiArray
     var attentionMask: MLMultiArray
     var refS: MLMultiArray
     var speed: MLMultiArray
+
+    init(inputIDs: MLMultiArray, attentionMask: MLMultiArray, refS: MLMultiArray, speed: MLMultiArray) {
+        self.inputIDs = inputIDs
+        self.attentionMask = attentionMask
+        self.refS = refS
+        self.speed = speed
+    }
 
     var featureNames: Set<String> { ["input_ids", "attention_mask", "ref_s", "speed"] }
 
@@ -155,24 +162,45 @@ private struct DurationInput: MLFeatureProvider {
 private extension MLMultiArray {
     convenience init(fromInt32 values: [Int32]) throws {
         try self.init(shape: [1, NSNumber(value: values.count)], dataType: .int32)
+        let row = 0 as NSNumber
         for (index, value) in values.enumerated() {
-            self[[0, NSNumber(value: index)]] = NSNumber(value: value)
+            self[[row, NSNumber(value: index)]] = NSNumber(value: value)
         }
     }
 
     convenience init(from values: [Float]) throws {
         try self.init(shape: [NSNumber(value: values.count)], dataType: .float32)
         for (index, value) in values.enumerated() {
-            self[NSNumber(value: index)] = NSNumber(value: value)
+            self[[NSNumber(value: index)]] = NSNumber(value: value)
         }
     }
 
     func asIntArray() -> [Int] {
-        if dataType == .int32 {
-            let pointer = UnsafeMutablePointer<Int32>(OpaquePointer(dataPointer))
-            return (0..<count).map { Int(pointer[$0]) }
-        } else {
-            return (0..<count).map { Int(truncating: self[NSNumber(value: $0)]) }
+        var result: [Int] = []
+        result.reserveCapacity(count)
+        // Handle 1D arrays
+        if shape.count == 1 {
+            let n = Int(truncating: shape[0])
+            for i in 0..<n {
+                result.append(Int(truncating: self[[NSNumber(value: i)]]))
+            }
+            return result
         }
+        // Handle 2D arrays (e.g., [1, N])
+        if shape.count == 2 {
+            let rows = Int(truncating: shape[0])
+            let cols = Int(truncating: shape[1])
+            for r in 0..<rows {
+                for c in 0..<cols {
+                    result.append(Int(truncating: self[[NSNumber(value: r), NSNumber(value: c)]]))
+                }
+            }
+            return result
+        }
+        // Fallback: linear read
+        for i in 0..<count {
+            result.append(Int(truncating: self[[NSNumber(value: i)]]))
+        }
+        return result
     }
 }
